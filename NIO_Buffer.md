@@ -7,29 +7,8 @@ buffer是一个可读写容器
 默认写 通过flip转换为读
 
 
+
 wrapper 
-
-# Direct Buffe
-直接缓冲
-
-零拷贝
-减少内存 拷贝  
-
-
-# 构造
-
-public static ByteBuffer allocate(int capacity) {
-    if (capacity < 0)
-        throw new IllegalArgumentException();
-    return new HeapByteBuffer(capacity, capacity);
-}
-到底是什么  数组
-
-
-只读缓冲 HeapByteBufferR
-直接缓冲
- 直接 和 非直接 
-
 
 
 
