@@ -18,9 +18,6 @@
 
 
 
-
-
-
 # DirectByteBuffer
 
 public static ByteBuffer allocateDirect(int capacity) {
@@ -61,6 +58,21 @@ GC  内存复制
 
 
 0拷贝
+
+
+# Direct Buffe
+直接缓冲
+
+零拷贝
+减少内存 拷贝  
+
+
+
+
+
+只读缓冲 HeapByteBufferR
+直接缓冲
+ 直接 和 非直接 
 
 
 
