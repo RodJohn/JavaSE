@@ -1,3 +1,9 @@
+# 实现类
+
+	常见的Channel实现类
+    SocketChannel ：一个客户端用来发起 TCP 的 Channel 。
+    ServerSocketChannel ：一个服务端用来监听新进来的连接的 TCP 的 Channel 
+    FileChannel ：从文件中，读写数据。
 
 
 
@@ -82,8 +88,7 @@
 	serverSocketChannel.configureBlocking(false);
 
 	while(true){
-		SocketChannel socketChannel =
-				serverSocketChannel.accept();
+		SocketChannel socketChannel = serverSocketChannel.accept();
 
 		if(socketChannel != null){
 			//do something with socketChannel...
