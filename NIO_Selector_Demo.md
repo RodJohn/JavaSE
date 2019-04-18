@@ -39,6 +39,7 @@
 			socketChannel.write(writeBuff);
 			key.interestOps(SelectionKey.OP_READ);
 		}
+		keyIterator.remove();
 	}
 	}
 
