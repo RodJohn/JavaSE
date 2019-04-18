@@ -1,95 +1,141 @@
 
-# buffer
+# 作用
 
-buffer是一个可读写容器
-本质上是一个数组  ？？ 
-提供基本类型的
-默认写 通过flip转换为读
+    Buffer相当于一个容器
+    用于缓存读写间的数据
 
+# 结构
 
-
-wrapper 
-
+    Buffer内部是一个数组
+    通过position,limit,capacity记录当期操作的状态
 
 
-# 属性
+## 属性
 
 capacity
-容量，
-Buffer 能容纳的数据元素的最大值。
-这一容量在 Buffer 创建时被赋值，并且永远不能被修改
+
+    容量，能容纳的数据元素的最大值。
 
 limit 
 
-有效容量
-
+    有效容量
     写模式下，代表最大能写入的数据上限位置，这个时候 limit 等于 capacity 。
-    读模式下，在 Buffer 完成所有数据写入后，通过调用 #flip() 方法，切换到读模式。
-    此时，limit 等于 Buffer 中实际的数据大小。因为 Buffer 不一定被写满，所以不能使用 capacity 作为实际的数据大小。
-
-
+    读模式下，等于 Buffer 中实际的数据大小。因为 Buffer 不一定被写满
 
 position 
-读写进度的标识位的
-  下一个读写位
-  位置，初始值为 0 。
 
+    下一个可读写位
     写模式下，每往 Buffer 中写入一个值，position 就自动加 1 ，代表下一次的写入位置。
     读模式下，每从 Buffer 中读取一个值，position 就自动加 1 ，代表下一次的读取位置。( 和写模式类似 )
 
 
 mark 
 
-  标记，通过 #mark() 方法，记录当前 position ；通过 reset() 方法，恢复 position 为标记。
-
-    写模式下，标记上一次写位置。
-    读模式下，标记上一次读位置。
+    标记位
+    通过 #mark() 方法，记录当前 position ；通过 reset() 方法，恢复 position 为标记。
 
 
 mark <= position <= limit <= capacity
 
 
 
-# 方法
-
-flip
-
-从写模式切换到读模式
-如果要读取 Buffer 中的数据，需要切换模式，
-
-
-public final Buffer flip() {
-    limit = position; // 设置读取上限
-    position = 0; // 重置 position
-    mark = -1; // 清空 mark
-    return this;
-}
 
 
 
-# ByteBuffer容器操作
-
-3. 除了读写byte类型数据的函数，ByteBuffer的一个特别之处是它还定义了读写其它primitive数据的方法，如：
-
-　　int getInt()       　　　　　　//从ByteBuffer中读出一个int值。
-　　ByteBuffer putInt(int value)  // 写入一个int值到ByteBuffer中。
+# 基本操作
 
 
-# slice 
+读操作
 
-不是新的数据  共享底层的数据
+    将Channel中的数据写入到 Buffer 中
+    会返回写入的数据大小
+
+    public interface ReadableByteChannel extends Channel {
+        public int read(ByteBuffer dst) throws IOException;
+    }
+
+   
+    
+写操作
+
+    将Buffer中的数据写入Channel
+    会返回写入的数据大小
+
+    public interface WritableByteChannel extends Channel {
+        public int write(ByteBuffer src) throws IOException; 
+    }
+    
+ 
+flip 
+
+    将Buffer从写模式切换到读模式
+
+    public final Buffer flip() {
+        limit = position; // 设置读取上限
+        position = 0; // 重置 position
+        mark = -1; // 清空 mark
+        return this;
+    }
+
+rewind
+
+    大多数情况下，该方法主要针对于读模式，所以可以翻译为“倒带”。
+
+    public final Buffer rewind() {
+        position = 0; // 重置 position
+        mark = -1; // 清空 mark
+        return this;
+    }
+
+
+clear
+
+    clear() 方法，可以“重置” Buffer 的数据。因此，我们可以重新读取和写入 Buffer 了。
+
+    大多数情况下，该方法主要针对于写模式。代码如下：
+
+    public final Buffer clear() {
+        position = 0; // 重置 position
+        limit = capacity; // 恢复 limit 为 capacity
+        mark = -1; // 清空 mark
+        return this;
+    }
+
 
 # 示例
 
 
-使用 NIO复制文件 
+    文件复制
 
-
-
-
-
-线程安全
-
+    public static void main(String[] args) throws Exception {
+        ByteBuffer buff = ByteBuffer.allocate(6);
+        FileChannel fin = null;
+        FileChannel fout = null;
+        try {
+            fin = new RandomAccessFile("in.txt", "rw").getChannel();
+            fout = new RandomAccessFile("out.txt", "rw").getChannel();
+            while (fin.read(buff) != -1) {
+                buff.flip();
+                fout.write(buff);
+                buff.clear();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fin != null) {
+                    fin.close();
+                }
+                if (fout != null) {
+                    fout.close();
+                }
+            } catch (IOException e) {
+                throw e;
+            }
+        }
+    }
+    
+    
 
 
 
