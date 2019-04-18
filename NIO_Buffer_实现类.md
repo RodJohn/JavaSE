@@ -1,7 +1,5 @@
 
 
-内部是一个数组
-
 # 实现类
 
 
@@ -10,19 +8,53 @@
 # HeapByteBuffer
 
 
+    HeadByteBuffer
+    新生成了一个长度为capacity的数组
+
     public static ByteBuffer allocate(int capacity) {
         if (capacity < 0)
             throw new IllegalArgumentException();
         return new HeapByteBuffer(capacity, capacity);
     }
 
+    HeapByteBuffer(int cap, int lim, boolean isReadOnly) {  
+        // package-private
+        super(-1, 0, lim, cap, new byte[cap], 0);
+        this.isReadOnly = isReadOnly;
+    }
+
+    ByteBuffer(int mark, int pos, int lim, int cap, byte[] hb, int offset) {
+        super(mark, pos, lim, cap, 0);
+        this.hb = hb;
+        this.offset = offset;
+    }
 
 
 # DirectByteBuffer
 
-public static ByteBuffer allocateDirect(int capacity) {
-    return new DirectByteBuffer(capacity);
-}
+    DirectByteBuffer
+    由runtime去申请了了一块内存。不是直接在堆内存中。
+
+
+    public static ByteBuffer allocateDirect(int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity < 0: " + capacity);
+        }
+
+        DirectByteBuffer.MemoryRef memoryRef = new DirectByteBuffer.MemoryRef(capacity);
+        return new DirectByteBuffer(capacity, memoryRef);
+    }
+
+    MemoryRef(int capacity) {
+        VMRuntime runtime = VMRuntime.getRuntime();
+        buffer = (byte[]) runtime.newNonMovableArray(byte.class, capacity + 7);
+        allocatedAddress = runtime.addressOf(buffer);
+        // Offset is set to handle the alignment: http://b/16449607
+        offset = (int) (((allocatedAddress + 7) & ~(long) 7) - allocatedAddress);
+        isAccessible = true;
+    }
+
+
 
 
 
