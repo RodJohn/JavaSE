@@ -41,3 +41,41 @@ GC  内存复制
 0拷贝
 
 
+
+
+
+
+# MappedByteBuffer
+
+内存映射文件
+直接在内存中修改文件 由操作系统进行同步到文件
+也是堆外内存
+
+速度快
+
+# 文件锁
+
+共享锁 排它锁
+
+
+# Scattering Gatering
+
+将一个channel的数据读到多个buffer中  
+Scattering Gathering
+这是channel操作buffer的两个特性，发散和聚合
+发散是指从channel中读取数据的时候可以传入buffer的数组，并依次将buffer数组写满，直到channel中无数据
+聚合是指往channel中写入数据时可以传入buffer数据，并依次将buffer数据中的数据读入channel中，直到无数据
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
