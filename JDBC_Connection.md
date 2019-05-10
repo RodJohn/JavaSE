@@ -8,7 +8,7 @@
 
 	Statement createStatement()  
 		静态语句
-  PreparedStatement prepareStatement(String sql)
+  	PreparedStatement prepareStatement(String sql)
 		预编译语句
 	CallableStatement prepareCall(String sql)
 		存储过程
