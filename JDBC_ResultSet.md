@@ -21,3 +21,5 @@
 	String getString(int columnIndex)
 
 
+# 常用数据类型转换表
+
