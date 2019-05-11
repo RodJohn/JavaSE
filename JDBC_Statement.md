@@ -1,16 +1,23 @@
-
-
 # Statement
 
 
 # 类型
 
-概述
+Statement 
 
-	Statement 
-		封装静态SQL(写死的SQL)
-	PreperedStatement
-		预编译语句（带有占位符）
+	静态SQL
+	(写死的SQL)
+	
+PreperedStatement
+
+	预编译语句
+	所有参数都由 ? 符号作为占位符，在执行SQL语句之前，必须为每个参数(占位符)提供值。
+	
+CallableStatement
+
+	调用存储过程
+	在执行语句之前，必须将值绑定到所有参数
+
 
 区别
 		
@@ -21,16 +28,20 @@
 
 # 创建
 
+	参考Connection
 
 
+# 参数设置
 
-参数设置
+	PreparedStatement、CallableStatement需要设置参数
 
-	PreparedStatement需要
-	void  setXxx(int parameterIndex, Xxx value):  
-		xxx表示数据类型,比如:String,int,Long等，
-		parameterIndex:设置第几个占位符?(从1开始)，
-		value:需要设置的参数值。
+setXxx
+	
+	void  setXxx(int parameterIndex, Xxx value)
+	
+	xxx表示数据类型,比如:String,int,Long等，
+	parameterIndex:设置第几个占位符?(从1开始)，
+	value:需要设置的参数值。
 		
 		
 
@@ -39,6 +50,13 @@
 
 
 ## Statement
+
+execute
+
+	boolean execute (String SQL)
+	如果可以检索到ResultSet对象，则返回一个布尔值true; 否则返回false。
+	使用此方法执行SQLDDL语句或需要使用真正的动态SQL，可使用于执行创建数据库，创建表的SQL语句等等。
+
 
 executeUpdate
 
@@ -61,7 +79,6 @@ executeQuery
 	ResultSet executeQuery() 
 	
 				
-
 
 # 获取自动生成的主键
 
