@@ -2,11 +2,19 @@
 
 # 注册驱动
 
-注册底层驱动
+## 作用
+
+ 	注册驱动其实就是加载驱动类文件
+	将其用作JDBC接口的实现
 	
+## 方式
+
+静态方法注册
+
+	注册底层驱动
 	DriverManager.registerDriver(new Driver());
 	
-无耦合注册
+Class.forName
 	
 	Class.forName("com.mysql.jdbc.Driver");
 
@@ -29,6 +37,10 @@
 
 # 建立连接
 
-建立和数据库的连接
+## 作用
+
+	建立和数据库的连接
+
+## 方式
 
 	Connection con = DriverManager.getConnection(url, username, password);
