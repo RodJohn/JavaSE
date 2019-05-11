@@ -1,8 +1,30 @@
 # JDBC
 
-JDBC(Java DataBase Connectivity)
+定义
 
-JDBC本身是java连接数据库的一个标准,是进行数据库连接的抽象层,由java编写的一组类和接口组成，接口的实现由各个数据库厂商来完成
+	JDBC(Java DataBase Connectivity)
+	是java连接数据库的一个标准
+	
+作用
+	
+	Java操作数据库连接的API
+
+
+# 架构
+
+	JDBC由JDBC API 和 JDBC驱动程序驱动组成
+
+JDBC API
+
+	提供应用程序到JDBC管理器连接标准
+
+JDBC驱动
+
+	
+
+
+# 版本
+
 
 
 
